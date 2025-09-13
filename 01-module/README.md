@@ -19,6 +19,20 @@ Operator focus more on the southbound side and they have a few different concern
 2nd level challenge we see with nomad is when you look at most infrastructure you have a really bad rate of hardware utilization, now typically less than 2% and so how do we actually solve this because we have all these 8 core 16 core machines that are running an application doing a hundred or a thousand requests a day. Where this is effectively idle we are not making good use of hardware and so the approach nomad takes is to run multiple applications on the same machine so how do we move from place where at less than 2% to be at 20-30% utilization, you might look at this 20-30% doesnt sound like that good why don't we shoot for higher than that?
 but we have to realize that is with sort of law of small numbers because we are starting at sort of such a bad place going from 2% to call it 20% what you still get out of this transition is an incredible reduction in your fleet size. So as you go from 2% to 20% its actually a 90% reduction and the amount of overall hardware we are we need we can replace every 10 machines with 1. 
 
+In Sum, there is that Total Cost Optimization (TCO) that comes from running multiple applications and making better use of our resources. So this is the kind of primary focus how do we allow this sort of decoupling and self-service, how do we look at total Cost of Ownership as a secondary goal.
+
+And so then what we haven't really mentioned is we were talking generically about an application running on a machine and this really comes back to how flexible Nomad is.
+
+One side a major use case for Nomad is acting as a container platform, this application that we are deploying might be packaged as a container image and Nomad can orchestrate the deployment of that container across the cluster. This means that developers can take advantage of the benefits of containerization, such as isolation and portability, while still leveraging the powerful scheduling and resource management capabilities of Nomad. 
+
+But what about applications that aren't containerized or that can't easily be containerized this is actually a whole 2nd use case for Nomad, which is both windows as well as legacy applications so when we talk about some of these applications.
+
+So maybe its just a simple C# application that we are deploying on windows or its something more heavyweight that we can't easily containerize. Nomad allows us to run many of these types of workloads without needing to make that sort of transition and packaging format. Common use case is running C# directly on top of windows without containerizing and reporting them to linux. Ends up being a common workflow for us.
+
+Now beyond that the interesting thing is when we talk about sort of north and southbound API, what we are really providing is an API for scheduling work. It could be that we are specifiying our Job and submitting it manually to Nomad. But we can also programmatically consume Nomad's API to deploy jobs and this actually leads to a few interesting use cases. 
+- 1st: might call it job queuing or call it a serverless pattern of deployment is when an event comes in how do we translate that event into something that need to execute. Great example is Pipelin, every time a commit comes in the CI has to trigger a build goes in tests (does this cause a change? (yes/no)) and so pipeline has publicly talked how they use Nomad's behind the scenes for their infrastructure so they get a webhook in an event that it commits has taken place, they translate that and submit a job for Nomad to go run that build, and what they see is being able to submit well over a thousand jobs a min to Nomad.
+
+
 
 
 
